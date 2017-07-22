@@ -1,0 +1,8 @@
+from __future__ import unicode_literals
+import multiprocessing
+
+bind = "unix:/home/ubuntu/teamedup-ybf/gunicorn.sock"
+workers = 1
+errorlog = "/home/ubuntu/logs/teamedups_error.log"
+loglevel = "error"
+proc_name = "teamedup"

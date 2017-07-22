@@ -1,0 +1,606 @@
+{#{% extends "base.html" %}#}
+{#{% load mezzanine_tags keyword_tags %}#}
+{##}
+{#{% block meta_title %}{{ page.meta_title }}{% endblock %}#}
+{##}
+{#{% block meta_keywords %}{% metablock %}#}
+{#{% keywords_for page as keywords %}#}
+{#{% for keyword in keywords %}#}
+{#    {% if not forloop.first %}, {% endif %}#}
+{#    {{ keyword }}#}
+{#{% endfor %}#}
+{#{% endmetablock %}{% endblock %}#}
+{##}
+{#{% block meta_description %}{% metablock %}#}
+{#{{ page.description }}#}
+{#{% endmetablock %}{% endblock %}#}
+{##}
+{#{% block title %}#}
+{#{% editable page.title %}{{ page.title }}{% endeditable %}#}
+{#{% endblock %}#}
+{##}
+{#{% block main %}#}
+{#{% endblock %}#}
+
+
+
+
+
+
+
+{# ------------------------------------------------------------------------------------------------------ #}
+
+
+
+
+
+
+{% extends "base.html" %}
+{% load i18n mezzanine_tags blog_tags keyword_tags disqus_tags %}
+{% load pages_tags mezzanine_tags i18n staticfiles %}
+{% block meta_title %}{% if page %}{{ page.meta_title }}{% else %}{% trans "Blog" %}{% endif %}{% endblock %}
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+{% if not forloop.first %}, {% endif %}
+{{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+{#{% block title %}#}
+{#{% if page %}#}
+{#{% editable page.title %}{{ page.title }}{% endeditable %}#}
+{#{% else %}#}
+{#{% trans "Blog" %}#}
+{#{% endif %}#}
+{#{% endblock %}#}
+{#{% block breadcrumb_menu %}#}
+{#{{ block.super }}#}
+{#{% if tag or category or year or month or author %}#}
+{#<li>{% spaceless %}#}
+{#   {% if tag %}#}
+{#   {% trans "Tag:" %} {{ tag }}#}
+{#   {% else %}{% if category %}#}
+{#   {% trans "Category:" %} {{ category }}#}
+{#   {% else %}{% if year or month %}#}
+{#   {% if month %}{{ month }}, {% endif %}{{ year }}#}
+{#   {% else %}{% if author %}#}
+{#   {% trans "Author:" %} {{ author.get_full_name|default:author.username }}#}
+{#   {% endif %}{% endif %}{% endif %}{% endif %}#}
+{#   {% endspaceless %}#}
+{#</li>#}
+{#{% endif %}#}
+{#{% endblock %}#}
+{% block main %}
+    {% if request.path == "/news/" %}
+{#<section id="blog" class="container">#}
+{#   <div class="row">#}
+{#      {% block right_panel %}#}
+{#      <aside class="col-sm-4 col-sm-push-8">#}
+{#         {% include "blog/includes/filter_panel.html" %}#}
+{#      </aside>#}
+{#      {% endblock %}#}
+{#      <div class="col-sm-8 col-sm-pull-4">#}
+{#         <div class="blog">#}
+{#            {% if tag or category or year or month or author %}#}
+{#            {% block blog_post_list_filterinfo %}#}
+{#            <p>#}
+{#               {% if tag %}#}
+{#               {% trans "Viewing posts tagged" %} {{ tag }}#}
+{#               {% else %}{% if category %}#}
+{#               {% trans "Viewing posts for the category" %} {{ category }}#}
+{#               {% else %}{% if year or month %}#}
+{#               {% trans "Viewing posts from" %} {% if month %}{{ month }}, {% endif %}#}
+{#               {{ year }}#}
+{#               {% else %}{% if author %}#}
+{#               {% trans "Viewing posts by" %}#}
+{#               {{ author.get_full_name|default:author.username }}#}
+{#               {% endif %}{% endif %}{% endif %}{% endif %}#}
+{#               {% endblock %}#}
+{#            </p>#}
+{#            {% else %}#}
+{#            {% if page %}#}
+{#            {% block blog_post_list_pagecontent %}#}
+{#            {% if page.get_content_model.content %}#}
+{#            {% editable page.get_content_model.content %}#}
+{#            {{ page.get_content_model.content|richtext_filters|safe }}#}
+{#            {% endeditable %}#}
+{#            {% endif %}#}
+{#            {% endblock %}#}
+{#            {% endif %}#}
+{#            {% endif %}#}
+{#            {% for blog_post in blog_posts.object_list %}#}
+{#            <div class="blog-item">#}
+{#               {% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}#}
+{#               {% block blog_post_list_post_featured_image %}#}
+{#               <a href="{{ blog_post.get_absolute_url }}">#}
+{#               <img width="100%" class="img-responsive img-blog" src="{{ MEDIA_URL }}{{ blog_post.featured_image }}">#}
+{#               </a>#}
+{#               {% endblock %}#}
+{#               {% endif %}#}
+{#               <div class="blog-content">#}
+{#                  {% block blog_post_list_post_title %}#}
+{#                  {% editable blog_post.title %}#}
+{#                  <a href="{{ blog_post.get_absolute_url }}">#}
+{#                     <h3>{{ blog_post.title }}</h3>#}
+{#                  </a>#}
+{#                  {% endeditable %}#}
+{#                  {% endblock %}#}
+{#                  {% block blog_post_list_post_metainfo %}#}
+{#                  {% editable blog_post.publish_date %}#}
+{#                  <div class="entry-meta">#}
+{#                     <span><i class="icon-user"></i> {% with blog_post.user as author %}#}
+{#                     <a href="{% url "blog_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a>#}
+{#                     {% endwith %}#}
+{#                     </span>#}
+{#                     <span><i class="icon-folder-close"></i>#}
+{#                     {% with blog_post.categories.all as categories %}#}
+{#                     {% if categories %}#}
+{#                     {% trans "in" %}#}
+{#                     {% for category in categories %}#}
+{#                     <a href="{% url "blog_post_list_category" category.slug %}">{{ category }}</a>{% if not forloop.last %}, {% endif %}#}
+{#                     {% endfor %}#}
+{#                     {% endif %}#}
+{#                     {% endwith %}#}
+{#                     </span>#}
+{#                     <span><i class="icon-calendar"></i> {% blocktrans with sometime=blog_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}</span>#}
+{#                     <span><i class="icon-comment"></i>#}
+{#                     {% if blog_post.allow_comments %}#}
+{#                     {% if settings.COMMENTS_DISQUS_SHORTNAME %}#}
+{#                     <a href="{{ blog_post.get_absolute_url }}#disqus_thread"#}
+{#                        data-disqus-identifier="{% disqus_id_for blog_post %}">#}
+{#                     {% trans "Comments" %}#}
+{#                     </a>#}
+{#                     {% else %}#}
+{#                     <a href="{{ blog_post.get_absolute_url }}#comments">#}
+{#                     {% blocktrans count comments_count=blog_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %}#}
+{#                     </a>#}
+{#                     {% endif %}#}
+{#                     {% endif %}#}
+{#                     </span>#}
+{#                  </div>#}
+{#                  {% endeditable %}#}
+{#                  {% endblock %}#}
+{#                  {% block blog_post_list_post_content %}#}
+{#                  {% editable blog_post.content %}#}
+{#                  {{ blog_post.description_from_content|safe }}#}
+{#                  {% endeditable %}#}
+{#                  {% endblock %}#}
+{#                  <a href="{{ blog_post.get_absolute_url }}"  class="btn btn-default">{% trans "read more" %} <i class="icon-angle-right"> </i></a>#}
+{#                  {% block blog_post_list_post_links %}#}
+{#                  {% keywords_for blog_post as tags %}#}
+{#                  {% if tags %}#}
+{#                  <div class="tags">#}
+{#                     <i class="icon-tags"></i> {% trans "Tags" %}:#}
+{#                     {% spaceless %}#}
+{#                     {% for tag in tags %}#}
+{#                     <a href="{% url "blog_post_list_tag" tag.slug %}" class="btn btn-xs btn-primary">{{ tag }}</a> &nbsp;#}
+{#                     {% endfor %}#}
+{#                     {% endspaceless %}#}
+{#                  </div>#}
+{#                  {% endif %}#}
+{#               </div>#}
+{#            </div>#}
+{#            {% endblock %}#}
+{#            {% endfor %}#}
+{#         </div>#}
+{#      </div>#}
+{#      {% pagination_for blog_posts %}#}
+{#      {% if settings.COMMENTS_DISQUS_SHORTNAME %}#}
+{#      {% include "generic/includes/disqus_counts.html" %}#}
+{#      {% endif %}#}
+{#   </div>#}
+{#</section>#}
+        <div class="hero event-details-hero">
+
+            <div class="container">
+                {% if top_featured_post %}
+                    <div class="hero-text">
+                        <p class="news-category">News // Transport</p>
+                        <h1 class="hero-title">
+                            {% editable top_featured_post.title %}
+                                {{ top_featured_post.title }}
+                            {% endeditable %}
+                        </h1>
+                        <p>by <a href="#" class="no-underline">
+                            {% with top_featured_post.user as author %}
+                                {{ author.get_full_name|default:author.username }}
+                            {% endwith %}
+                        </a></p>
+                        <a href="{{ top_featured_post.get_absolute_url }}" class="read-more">Keep reading &rarr;</a>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+        {% if featured_post1 and featured_post2 %}
+
+            <section class="featured-news">
+
+                <div class="container container-960">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <p class="news-category">News // Technology</p>
+                            <h2 class="news-title">
+                                {% editable featured_post1.title %}
+                                    {{ featured_post1.title }}
+                                {% endeditable %}
+                            </h2>
+                            <p class="posted-by">by <a href="#">
+                                {% with featured_post1.user as author %}
+                                    {{ author.get_full_name|default:author.username }}
+                                {% endwith %}
+                            </a></p>
+                            <p class="news-description">
+                                {% editable featured_post1.content %}
+                                    {{ featured_post1.description_from_content|safe }}
+                                {% endeditable %}
+                            </p>
+                            <a href="{{ featured_post1.get_absolute_url }}" class="read-more">Keep reading &rarr;</a>
+
+                        </div>
+
+                        <div class="col-sm-6">
+
+                            <p class="news-category">News // Technology</p>
+                            <h2 class="news-title">
+                                {% editable featured_post2.title %}
+                                    {{ featured_post2.title }}
+                                {% endeditable %}
+                            </h2>
+                            <p class="posted-by">by <a href="#">
+                                {% with featured_post2.user as author %}
+                                    {{ author.get_full_name|default:author.username }}
+                                {% endwith %}
+                            </a></p>
+                            <p class="news-description">
+                                {% editable featured_post2.content %}
+                                    {{ featured_post2.description_from_content|safe }}
+                                {% endeditable %}
+                            </p>
+                            <a href="{{ featured_post2.get_absolute_url }}" class="read-more">Keep reading &rarr;</a>
+
+                        </div>
+                    </div>
+
+                </div><!-- /.container -->
+
+            </section><!-- /.next-events -->
+
+        {% endif %}
+
+        {% if featured_post3 and featured_post4 %}
+
+            <section class="featured-news">
+
+                <div class="container container-960">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <p class="news-category">News // Technology</p>
+                            <h2 class="news-title">
+                                {% editable featured_post3.title %}
+                                    {{ featured_post3.title }}
+                                {% endeditable %}
+                            </h2>
+                            <p class="posted-by">by <a href="#">
+                                {% with featured_post3.user as author %}
+                                    {{ author.get_full_name|default:author.username }}
+                                {% endwith %}
+                            </a></p>
+                            <p class="news-description">
+                                {% editable featured_post3.content %}
+                                    {{ featured_post3.description_from_content|safe }}
+                                {% endeditable %}
+                            </p>
+                            <a href="{{ featured_post3.get_absolute_url }}" class="read-more">Keep reading &rarr;</a>
+
+                        </div>
+                        <div class="col-sm-6">
+
+                            <p class="news-category">News // Technology</p>
+                            <h2 class="news-title">
+                                {% editable featured_post4.title %}
+                                    {{ featured_post4.title }}
+                                {% endeditable %}
+                            </h2>
+                            <p class="posted-by">by <a href="#">
+                                {% with featured_post4.user as author %}
+                                    {{ author.get_full_name|default:author.username }}
+                                {% endwith %}
+                            </a></p>
+                            <p class="news-description">
+                                {% editable featured_post4.content %}
+                                    {{ featured_post4.description_from_content|safe }}
+                                {% endeditable %}
+                            </p>
+                            <a href="{{ featured_post4.get_absolute_url }}" class="read-more">Keep reading &rarr;</a>
+
+                        </div>
+                    </div>
+
+                </div><!-- /.container -->
+
+            </section><!-- /.next-events -->
+
+        {% endif %}
+
+        <section class="news-page">
+
+            <div class="container container-960">
+
+                <div class="filters-fix">
+
+                    <div class="filters-wrapper" data-spy="affix">
+
+                        <div class="events-filter news-filter">
+                            <span class="filter-label">Search</span>
+                            <ul class="list-unstyled">
+                                <li><a href="#">Popular</a></li>
+                                <li><a href="#">New</a></li>
+                                <li><a href="#">Featured</a></li>
+                            </ul>
+                            <a href="#" class="all-events pull-right">All Articles...</a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="news-page-list">
+                    {% for blog_post in blog_posts.object_list %}
+                    <div class="news-single-item">
+                        <div class="news-single-thumb">
+                            <img src="{% static "img/news-tmp.png" %}" alt="">
+                        </div>
+                        <div class="news-single-content">
+                            <p class="news-category">News // Technology</p>
+                            {% block blog_post_list_post_title %}
+                                {% editable blog_post.title %}
+                                    <h3 class="news-title">{{ blog_post.title }}</h3>
+                                {% endeditable %}
+                            {% endblock %}
+                            {% block blog_post_list_post_metainfo %}
+                            <p class="news-author">by <strong>
+                                {% with blog_post.user as author %}
+                                    {{ author.get_full_name|default:author.username }}
+                                {% endwith %}
+                            </strong></p>
+                            {% endblock %}
+                            {% block blog_post_list_post_content %}
+                                {% editable blog_post.content %}
+                                    {{ blog_post.description_from_content|safe }}
+                                {% endeditable %}
+                            {% endblock %}
+                            <a href="{{ blog_post.get_absolute_url }}" class="read-more">Keep reading &rarr;</a>
+                        </div>
+                    </div><!-- /.news-single-item -->
+                    {% endfor %}
+                </div><!-- /.news-list -->
+                <nav aria-label="News list navigation">
+                    {% pagination_for blog_posts %}
+                    <p class="total-items">{{ total_blogs }} total items</p>
+                </nav>
+
+            </div><!-- /.container -->
+        </section><!-- /.news-page -->
+    {% endif %}
+    {% if request.path == "/events/" %}
+        <section class="events-info">
+
+			<div class="container">
+
+				<div class="row">
+
+					<div class="col-sm-6">
+						<div class="events-info-inner">
+							<h2>Events</h2>
+							<p>126 events,<br>
+							2500 members,<br>
+							365 days a year</p>
+
+							<p>Post or attend for free.</p>
+						</div><!-- /.events-info-inner -->
+					</div>
+
+					<div class="col-sm-6">
+						<form class="event-form">
+		                    <div class="form-group mb-30">
+		                        <label for="find-event">Find an event</label>
+		                        <input type="text" id="find-event" class="form-control" placeholder="Beginner’s Code Group">
+		                    </div>
+		                    <div class="form-group">
+		                        <button class="btn btn-dark" type="button">Search YFB events</button>
+		                        <button class="btn btn-transparent-dark" type="button" data-toggle="modal" data-target="#create-event-modal">Create new event</button>
+		                    </div>
+		                </form><!-- /.event-form -->
+					</div>
+
+				</div>
+
+			</div>
+
+		</section><!-- /.events-info -->
+
+        <section class="next-events">
+
+            <div class="container container-960">
+
+                <div class="row">
+
+                    <div class="col-sm-6">
+
+                        <p class="news-category">11am 8 Aug 2017</p>
+                        <h2 class="news-title">Fintech Australia:<br> R&amp;D Tech Grants 101 Workshop</h2>
+                        <p class="news-description"><span class="posted-by">posted by<br> <a href="#">Xero</a></span> <a href="#" class="rsvp-btn">RSVP</a></p>
+
+                    </div>
+
+					<div class="col-sm-6">
+
+                        <p class="news-category">11am 8 Aug 2017</p>
+                        <h2 class="news-title">DisruptHealth: A Primer for Entrepenuers, Professionals and Patients.</h2>
+                        <p class="news-description"><span class="posted-by">posted by<br> <a href="#">BlockChain AU</a></span> <a href="#" class="rsvp-btn">RSVP</a></p>
+
+                    </div>
+
+                </div>
+
+            </div><!-- /.container -->
+
+        </section><!-- /.next-events -->
+
+        <section class="events-list">
+
+            <div class="container container-960">
+
+				<div class="filters-fix">
+
+					<div class="filters-wrapper" data-spy="affix">
+
+						<div class="events-filter">
+							<span class="filter-label">Search</span>
+							<ul class="list-unstyled">
+								<li><a href="#">Popular</a></li>
+								<li><a href="#">New</a></li>
+								<li><a href="#">Featured</a></li>
+							</ul>
+							<a href="#" class="all-events pull-right">All Events...</a>
+						</div><!-- /.events-filter -->
+					</div>
+
+				</div>
+
+				<div class="row row-margin-1">
+
+					<div class="col-sm-12 col-xs-12">
+						<p class="events-date">Tuesday, August 8</p>
+					</div>
+
+					<div class="col-sm-3 col-xs-12">
+						<div class="event-item">
+							<p class="event-date">11am 8 Aug 2017</p>
+							<h2 class="event-name"><a href="event-details.html">Fintech Australia: R&amp;D Tech Grants 101 Workshop</a></h2>
+							<a href="#" class="event-attending">posted by</a>
+						</div><!-- /.event-item -->
+					</div>
+
+					<div class="col-sm-3 col-xs-12">
+						<div class="event-item">
+							<p class="event-date">12PM 8 AUG 2017</p>
+							<h2 class="event-name"><a href="event-details.html">Lunch: Deep Learning Meet &amp; Greet</a></h2>
+							<a href="#" class="event-attending">12 attending</a>
+						</div><!-- /.event-item -->
+					</div>
+
+					<div class="col-sm-3 col-xs-12">
+						<div class="event-item">
+							<p class="event-date">9PM 8 AUG 2017</p>
+							<h2 class="event-name"><a href="event-details.html">Afternoon Chat</a></h2>
+							<a href="#" class="event-attending">17 attending</a>
+						</div><!-- /.event-item -->
+					</div>
+
+					<div class="col-sm-3 col-xs-12">
+						<div class="event-item">
+							<p class="event-date">11am 8 Aug 2017</p>
+							<h2 class="event-name"><a href="#">The Future of Wearables: A Debate</a></h2>
+							<a href="#" class="event-attending">124 attending</a>
+						</div><!-- /.event-item -->
+					</div>
+
+					<div class="col-sm-3 col-xs-12">
+						<div class="event-item">
+							<p class="event-date">9PM 8 AUG 2017</p>
+							<h2 class="event-name"><a href="event-details.html">Beginners Code Group</a></h2>
+							<a href="#" class="event-attending">21 attending</a>
+						</div><!-- /.event-item -->
+					</div>
+
+				</div><!-- /.row -->
+
+				<div class="row row-margin-1">
+
+					<div class="col-sm-12 col-xs-12">
+						<p class="events-date">Wednesday, August 9</p>
+					</div>
+
+					<div class="col-sm-3 col-xs-12">
+						<div class="event-item">
+							<p class="event-date">2PM 9 AUG 2017</p>
+							<h2 class="event-name"><a href="#">YBF Town Square</a></h2>
+							<a href="#" class="event-attending">246 attending</a>
+						</div><!-- /.event-item -->
+					</div>
+
+					<div class="col-sm-3 col-xs-12">
+						<div class="event-item">
+							<p class="event-date">8PM 9 AUG 2017</p>
+							<h2 class="event-name"><a href="#">Movie Night</a></h2>
+							<a href="#" class="event-attending">21 attending</a>
+						</div><!-- /.event-item -->
+					</div>
+
+				</div><!-- /.row -->
+
+				<div class="row row-margin-1">
+
+					<div class="col-sm-12 col-xs-12">
+						<p class="events-date">Thursday, August 10</p>
+					</div>
+
+					<p class="no-events">No events yet!</p>
+
+				</div><!-- /.row -->
+
+				<div class="row row-margin-1">
+
+					<div class="col-sm-12 col-xs-12">
+						<p class="events-date">Friday, August 11</p>
+					</div>
+
+					<div class="col-sm-3 col-xs-12">
+						<div class="event-item">
+							<p class="event-date">12:30PM 11 AUG 2017</p>
+							<h2 class="event-name"><a href="#">Lunchtime Talks</a></h2>
+							<a href="#" class="event-attending">16 attending</a>
+						</div><!-- /.event-item -->
+					</div>
+
+					<div class="col-sm-3 col-xs-12">
+						<div class="event-item">
+							<p class="event-date">11am 8 Aug 2017</p>
+							<h2 class="event-name"><a href="#">Wind-down</a></h2>
+							<a href="#" class="event-attending">21 attending</a>
+						</div><!-- /.event-item -->
+					</div>
+
+				</div><!-- /.row -->
+
+				<nav aria-label="Events list navigation">
+				  	<ul class="pagination">
+				    	<li class="text-pagination">
+				      		<a href="#" aria-label="Previous">
+				        		<span aria-hidden="true">&larr; Prev Week</span>
+				      		</a>
+				    	</li>
+				    	<li class="text-pagination">
+				      		<a href="#" aria-label="Next">
+				        		<span aria-hidden="true">Next Week &rarr;</span>
+				      		</a>
+				    	</li>
+				  	</ul>
+
+				</nav>
+
+            </div><!-- /.container-fluid -->
+
+        </section><!-- /.events-list -->
+    {% endif %}
+{% endblock %}

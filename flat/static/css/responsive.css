@@ -1,0 +1,477 @@
+/*==========  Non-Mobile First Method  ==========*/
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 991px) {
+	/* Jobs */
+	.job-item {
+	    min-height: 255px;
+	    padding: 10px;
+	}
+
+	.job-title {
+		font-size: 16px;
+	}
+
+	/* Events */
+	.next-events .col-sm-6 {
+	    padding: 0 50px;
+	}
+
+	.events-list {
+	    padding: 50px 0 100px;
+	}
+
+	.event-details-sidebar .event-details-buttons .btn-half {
+	    width: 100%;
+	}
+
+	.event-details-buttons .btn-half + .btn-half {
+	    margin-left: 0;
+	}
+
+	/* News */
+	.featured-news .col-sm-6 {
+		padding: 0 50px;
+	}
+	
+	.news-page-list .news-single-item {
+		min-height: 215px;
+	}
+
+	.news-page-list .news-single-thumb {
+		height: 215px;
+	}
+
+	/* Footer */
+	.footer-col {
+		width: 25%;
+		float: left !important;
+		text-align: left !important;
+		margin-top: 30px;
+	}
+
+	.footer-col:first-child {
+		width: 100%;
+		margin-top: 0;
+	}
+
+	/* Modals */
+	.modal-body-left {
+		padding: 50px 40px;
+	}
+
+	.modal-body-right {
+		padding-left: 40px;
+		padding-right: 40px;
+	}
+}
+
+@media only screen and (min-width : 768px) and (max-width : 991px) {
+	.social-share a {
+		width: 103px;
+	}
+
+	.footer-col:nth-child(6) {
+		clear: both;
+	}
+
+	.modal-dialog {
+	    max-width: 90%;
+	}
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 767px) {
+	.container,
+	.affix .events-filter {
+		padding-left: 32px;
+		padding-right: 32px;
+	}
+
+	.pagination > li > a {
+		font-size: 13px;
+	}
+
+	/* User profile */
+	.user-profile {
+		margin: 3px 16px 0 0;
+	}
+	
+	.user-profile-thumb span {
+		color: #fff;
+  	  	font-size: 18px;
+	    position: absolute;
+	    right: -15px;
+	    top: 15px;
+	}
+
+	/* Main navigation */
+	.site-logo {
+		position: absolute;
+		top: 20px;
+		left: 0;
+		right: 0;
+		margin: auto;
+		z-index: 22;
+		width: 83px;
+	}
+
+	.site-navigation {
+	    background: rgba(0,0,0,0.85);
+	    height: 100%;
+	    left: 0;
+	    position: fixed;
+	    top: 0;
+	    width: 100%;
+	    opacity: 0;
+		visibility: hidden;
+
+	    -moz-transition: opacity 0.15s ease-in-out, visibility 0s 0.15s;
+	    -webkit-transition: opacity 0.15s ease-in-out, visibility 0s 0.15s;
+	    -o-transition: opacity 0.15s ease-in-out, visibility 0s 0.15s;
+	    -ms-transition: opacity 0.15s ease-in-out, visibility 0s 0.15s;
+	    transition: opacity 0.15s ease-in-out, visibility 0s 0.15s;
+	}
+
+	.site-navigation.show {
+		opacity: 1;
+		visibility: visible;
+
+		-moz-transition: opacity 0.15s ease-in-out;
+	    -webkit-transition: opacity 0.15s ease-in-out;
+	    -o-transition: opacity 0.15s ease-in-out;
+	    -ms-transition: opacity 0.15s ease-in-out;
+	    transition: opacity 0.15s ease-in-out;
+	}
+
+	.site-navigation ul {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		text-align: center;
+
+		transform: translate(-50%, -50%);
+		-moz-transform: translate(-50%, -50%);
+		-webkit-transform: translate(-50%, -50%);
+		-o-transform: translate(-50%, -50%);
+		-ms-transform: translate(-50%, -50%);
+	}
+
+	.site-navigation li {
+		display: block;
+		margin: 0;
+		text-align: center;
+	}
+
+	.site-navigation li + li {
+		margin: 0;
+	}
+
+	/* Responsive menu buttons */
+	.lines-button {
+	    display: block;
+	}
+	.lines-button.close {
+		position: fixed;
+	}
+	.lines-button.x.close .lines {
+		background-color: #fff !important;
+	}
+	.lines-button.x.close .line-middle {
+	    background: transparent !important;
+	}
+
+	/* Header */
+	.site-header {
+		height: auto;
+		padding-bottom: 50px;
+	}	
+
+	.hero-text {
+	    left: 0;
+	    padding-top: 110px;
+	    width: auto;
+	}
+
+	.event-details-hero .hero-text {
+		width: auto;
+	}
+
+	.hero-text, 
+	.hero .hero-form {
+		position: relative;
+	    top: auto;
+	    right: auto;
+		transform: none;
+	    -moz-transform: none;
+	    -webkit-transform: none;
+	    -ms-transform: none;
+	    -o-transform: none;
+	}
+
+	.hero-text h1,
+	.jobs-info h2 {
+		font-size: 24px;
+	    line-height: 32px;
+	}
+
+	.jobs-info h2 {
+		text-align: center;
+	}
+
+	.hero-text p {
+		font-size: 14px;
+	    line-height: 20px;
+	}
+
+	.hero .hero-form,
+	.event-form {
+		padding-top: 40px;
+	}
+	
+	/* Home news */
+	.home-news {
+		padding: 70px 0;
+	}
+
+	.home-news:before,
+	.home-news:after {
+	    width: 100%;
+	    height: 100%;
+	    left: 0;
+	}
+
+	.home-news .col-sm-6 {
+	    padding-right: 15px;
+	}
+
+	.job-item {
+	    min-height: 0;
+	    padding: 15px;
+	}
+
+	.home-overviews {
+ 	   padding: 35px 0;
+	}
+
+
+	/* Event page */
+	.events-info,
+	.next-events {
+		padding: 50px 0;
+	}
+
+	.events-info-inner {
+		margin-bottom: 40px;
+	}
+
+	.events-info-inner h2 {
+		font-size: 36px;
+	}
+
+	.events-info-inner p {
+	    font-size: 16px;
+	}
+	
+	.next-events::before {
+		display: none;
+	}
+
+	.next-events::after {
+		width: 100%;
+	}
+
+	.next-events .col-sm-6 {
+		padding: 0;
+		margin: auto;
+		max-width: 300px;
+	}
+
+	.next-events .col-sm-6:first-child {
+		margin-bottom: 50px;
+	}
+	
+	.events-list {
+		padding-bottom: 50px;
+	}
+
+	.events-list .row-eq-height {
+		display: block;
+	}
+
+	.event-item {
+		min-height: 0;
+	}
+
+	.event-details-sidebar {
+		margin-top: 40px;
+	}
+
+	.social-share {
+		max-width: 300px;
+	}
+
+	.events-filter {
+		margin-bottom: 40px;
+	}
+
+	.events-filter ul li {
+		margin-left: 20px;
+	}
+
+	.all-events.pull-right {
+		float: left !important;
+		clear: both;
+		margin-top: 20px;
+	}
+
+	.job-filters.event-details-buttons {
+		top: auto;
+		margin-top: 40px;
+	}
+
+	.company-profile-header .hero-text {
+		bottom: -35px;
+	}
+	
+	/* News */	
+	.featured-news {
+		padding: 0;
+	}
+
+	.featured-news .col-sm-6 {
+		clear: both;
+		overflow: hidden;
+    	padding: 50px 15px;
+	}
+
+	.featured-news::before,
+	.featured-news::after {
+		width: 100%; 
+		height: 50%;
+	}
+
+	.featured-news::after {
+	    left: 0;
+	    top: 50%;
+	}
+
+	.news-page-list .news-single-item {
+	    clear: both;
+	    margin: auto;
+	    max-width: 100%;
+	    min-height: 0;
+	    overflow: hidden;
+	    width: 330px;
+	}
+
+	.news-page-list .news-single-thumb {
+	    height: 215px;
+	    width: 100%;
+	}
+
+	.news-page-list .news-single-content {
+	    clear: both;
+	    float: left;
+	    padding: 20px;
+	    width: 100%;
+	}
+
+	/* Footer */
+	.site-footer {
+		padding: 60px 0;
+	}
+
+	.site-footer h3 {
+		font-size: 32px;
+		margin-bottom: 40px;
+	}
+
+	.footer-col {
+		width: 50%;
+	}
+
+	/* Modals */
+	.modal-dialog {
+	    width: auto;
+	}
+
+	.modal-body {
+		display: block;
+	}
+
+	.modal-body-left,
+	.modal-body-right {
+		width: 100%;
+		padding: 30px 15px;
+	}
+
+	#signup-modal .modal-body-right {
+	    padding-top: 30px;
+	}
+
+	#edit-profile-modal .modal-body-right {
+	    display: none;
+	}
+
+	#create-event-modal .modal-body-right .create-event-inner {
+		position: relative;
+		left: auto;
+		top: auto;
+		width: auto;
+		transform: none;
+	    -moz-transform: none;
+	    -webkit-transform: none;
+	    -ms-transform: none;
+	    -o-transform: none;
+	    padding: 50px 0;
+	}
+
+	.modal-title {
+		font-size: 30px;
+		margin-bottom: 25px;
+	}
+
+	.modal .form-group {
+		margin-bottom: 25px;
+	}
+
+	.modal-form-buttons .btn {
+		float: none;
+		width: 100%;
+	}
+	
+	.modal .btn {
+		max-width: 310px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.modal-body-right .btn {
+		margin-top: 25px;
+	}
+
+	.forget-password {
+		float: left;
+		width: 100%;
+		text-align: center;
+		margin-top: 10px;
+	}
+
+	/* Admin page */
+	.admin-page .events-filter ul li {
+	    margin-left: 10px;
+	}
+
+	.admin-page .events-filter a {
+		font-size: 14px;
+	}
+
+	.search-wrapper {
+		float: left;
+		clear: both;
+		top: auto;
+		margin: 10px 0;
+	}
+
+}

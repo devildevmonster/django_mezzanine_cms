@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+{% load pages_tags mezzanine_tags i18n staticfiles %}
+
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+<meta name="description" content="{% block meta_description %}{% endblock %}">
+<title>{% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
+<link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
+
+{% ifinstalled mezzanine.blog %}
+<link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
+<link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
+{% endifinstalled %}
+
+
+{% compress css %}
+
+<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+{#<link rel="stylesheet" href="{% static "css/mezzanine.css" %}">#}
+
+
+    <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/prettyPhoto.css" %}" rel="stylesheet">
+    <link href="{% static "css/animate.css" %}" rel="stylesheet">
+{#    <link href="{% static "css/main.css" %}" rel="stylesheet">#}
+    <link href="{{STATIC_URL}}css/style.css" rel="stylesheet">
+    <link href="{% static "css/responsive.css" %}" rel="stylesheet">
+   
+
+
+
+{% if LANGUAGE_BIDI %}
+<link rel="stylesheet" href="{% static "css/rtl.css" %}">
+{% endif %}
+{% ifinstalled cartridge.shop %}
+<link rel="stylesheet" href="{% static "css/cartridge.css" %}">
+{% if LANGUAGE_BIDI %}
+<link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
+{% endif %}
+{% endifinstalled %}
+{% block extra_css %}{% endblock %}
+{% endcompress %}
+ <!--[if lt IE 9]>
+    <script src="{% static "js/html5shiv.js" %}"></script>
+    <script src="{% static "js/respond.min.js" %}"></script>
+    <![endif]-->       
+    <link rel="shortcut icon" href="images/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+
+
+
+{% compress js %}
+<script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+<script src="{% static "js/bootstrap-extras.js" %}"></script>
+<script src="{% static "js/script.js" %}"></script>
+{% block extra_js %}{% endblock %}
+{% include "includes/footer_scripts.html" %}
+{% endcompress %}
+
+<!--[if lt IE 9]>
+<script src="{% static "js/html5shiv.js" %}"></script>
+<script src="{% static "js/respond.min.js" %}"></script>
+<![endif]-->
+
+{% block extra_head %}{% endblock %}
+</head>
+
+<body id="{% block body_id %}body{% endblock %}">
+
+
+
+{#    <header class="navbar navbar-inverse navbar-fixed-top wet-asphalt" role="banner">#}
+{#        <div class="container">#}
+{#            <div class="navbar-header">#}
+{#                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">#}
+{#                    <span class="sr-only">Toggle navigation</span>#}
+{#                    <span class="icon-bar"></span>#}
+{#                    <span class="icon-bar"></span>#}
+{#                    <span class="icon-bar"></span>#}
+{#                </button>#}
+{#                {% if settings.SITE_TITLE %}<a class="navbar-brand" href="/">{{ settings.SITE_TITLE }}</a>{% endif %}#}
+{#				{% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}#}
+{#            </div>#}
+{#            <div class="collapse navbar-collapse">#}
+{#               {% page_menu "pages/menus/dropdown.html" %}#}
+{#                </ul>#}
+{#            </div>#}
+{#        </div>#}
+{#    </header><!--/header-->#}
+
+    <header id="masthead" class="site-header {% if request.path == '/events/' %}event-list-header{% endif %}">
+
+        <div class="top-nav">
+
+            <div class="container container-960">
+
+                <a href="/" class="site-logo" rel="home"><img src="{% static "img/logo.png" %}" alt="" srcset="{% static "img/logo.png" %}"></a>
+
+                <button class="lines-button x toggle-menu" type="button" id="toggle-menu">
+                    <span class="lines line-top"></span>
+                    <span class="lines line-middle"></span>
+                    <span class="lines line-bottom"></span>
+                </button><!-- /.lines-button -->
+
+                <nav id="primary-navigation" class="site-navigation">
+
+                    <a href="/" class="site-logo visible-xs" rel="home"><img src="{% static "img/logo.png" %}" alt="" srcset="{% static "img/logo.png" %}"></a>
+
+                    {% page_menu "pages/menus/dropdown.html" %}
+
+                </nav><!-- /.site-navigation -->
+                {% if request.user.is_authenticated %}
+                    <div class="user-profile dropdown">
+
+                        <a class="dropdown-toggle" id="user-dropdown-menu" data-toggle="dropdown" aria-expanded="true">
+                            <div class="user-profile-thumb"><img src="{% static "img/avatar.jpg" %}" alt=""> <span class="visible-xs caret"></span></div>
+                            <div class="user-profile-meta hidden-xs">
+                                <div class="user-profile-meta-inner">
+                                    {% if request.user.is_superuser == True %}(ADMIN){% endif %}{{ request.user.first_name }}
+                                </div>
+                            </div>
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="user-dropdown-menu">
+                            <li><a href="person-profile.html">Profile</a></li>
+                            <li><a href="#">Settings</a></li>
+                            <li class="logout-btn"><a href="{% url "logout" %}?next=/">Logout</a></li>
+                        </ul>
+
+                    </div><!-- /.user-profile -->
+                {% endif %}
+
+            </div><!-- /.container -->
+
+        </div><!-- /.top-nav -->
+        {% if request.path == '/' %}
+            <div class="hero">
+
+                <div class="container">
+
+                    <div class="hero-text">
+                        <h1 class="hero-title">Create communities and work together.</h1>
+                        <p>York Butter Factory brings companies, startups and people together. Book events, find work or network with a vibrant community in the famous Melbourne co-working space.</p>
+                    </div>
+                    {% if not request.user.is_authenticated %}
+                    <form class="hero-form">
+                        <div class="form-group mb-30">
+                            <label for="user-email">Email</label>
+                            <input type="email" id="user-email" class="form-control" placeholder="hello@teamedup.com.au">
+                        </div>
+                        <div class="form-group">
+                            <a class="btn btn-white" type="button" data-toggle="modal" data-target="#signup-modal">Sign up</a>
+                            <button class="btn btn-transparent-white" type="button" data-toggle="modal" data-target="#login-modal">Log in to your account...</button>
+                        </div>
+                    </form>
+                    {% endif %}
+
+                </div>
+
+            </div><!-- /.hero -->
+        {% endif %}
+
+    </header><!-- /#header -->
+
+    <div id="login-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+
+                    <div class="modal-body-left">
+
+                        <button type="button" class="close visible-xs" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                        <h4 class="modal-title">Log In</h4>
+                        <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %} action="/accounts/login/?next=/news" role="form" class="login-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="login-email">Email Address</label>
+                                <input type="email" id="login-email" class="form-control" name="username" placeholder="hello@teamedup.com.au" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <input type="password" id="login-password" name="password" class="form-control" placeholder="Enter your password" required>
+                            </div>
+                            <div class="modal-form-buttons">
+                                <button class="btn btn-dark" type="submit">Log In</button>
+                                <a class="forget-password" href="#">Forget your password?</a>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="modal-body-right">
+
+                        <h5>New to York Butter Factory</h5>
+                        <p>Proin ac felis aliquam lacus dictum euismod et vitae libero. Nullam sollicitudin ultricies.</p>
+
+                        <button class="btn btn-transparent-white" type="button" data-toggle="modal" data-target="#signup-modal" data-dismiss="modal">Sign Up</button>
+
+                    </div>
+
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /#login-modal -->
+
+
+    <div id="signup-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+
+                    <div class="modal-body-left">
+
+                        <button type="button" class="close visible-xs" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                        <h4 class="modal-title">Sign Up</h4>
+                        <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %} action="/accounts/signup/?next=/news" role="form" class="signup-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="signup-name">Full Name</label>
+                                <input type="text" id="signup-name" name="first_name" class="form-control" placeholder="Nick Byrne">
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-email">Email Address</label>
+                                <input type="email" id="signup-email" name="email" class="form-control" placeholder="hello@teamedup.com.au">
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-password">Password</label>
+                                <input type="password" id="signup-password" name="password1" class="form-control" placeholder="Enter your password">
+                            </div>
+                            <div class="modal-form-buttons">
+                                <button class="btn btn-dark" type="submit">Sign Up</button>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="modal-body-right">
+
+                        <h5>Have an account already?</h5>
+                        <p>Whoa! What are you doing here!? Log in and get cracking!</p>
+
+                        <button class="btn btn-transparent-white" type="button" data-toggle="modal" data-target="#login-modal" data-dismiss="modal">Log In</button>
+
+                    </div>
+
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /#signup-modal -->
+
+
+<div class="container">
+
+{% nevercache %}
+{% if messages %}
+<div class="messages">
+{% for message in messages %}
+<div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {{ message }}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+{% endnevercache %}
+
+
+
+
+</div>
+{#{% block top %}#}
+{#<section class="emerald" id="title">#}
+{#        <div class="container">#}
+{#            <div class="row">#}
+{#                <div class="col-sm-6">#}
+{#                    <h1>{% block title %}{% endblock %}</h1>#}
+{##}
+{#                </div>#}
+{#                <div class="col-sm-6">#}
+{#                    <ul class="breadcrumb pull-right">#}
+{#                        {% spaceless %}#}
+{#							{% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}#}
+{#						{% endspaceless %}#}
+{##}
+{#                    </ul>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#   </section>#}
+{#{% endblock %}#}
+
+
+    {% block left_panel %}
+
+    {% endblock %}
+
+
+
+    {% block main %}{% endblock %}
+
+
+
+
+
+
+<section id="bottom" class="wet-asphalt">
+	<div class="container">
+	{% page_menu "pages/menus/footer.html" %}
+</div>
+</section>
+
+
+{% if not request.user.is_authenticated %}
+    <footer id="colophon" class="site-footer">
+        <div class="container">
+            <h3>Ready to join?</h3>
+            <form class="hero-form">
+                <div class="form-group mb-30">
+                    <label for="footer-user-email">Email</label>
+                    <input type="text" id="footer-user-email" class="form-control" placeholder="hello@teamedup.com.au">
+                </div>
+                <div class="form-group ">
+                    <button class="btn btn-white" type="button" data-toggle="modal" data-target="#signup-modal">Sign up</button>
+                    <button class="btn btn-transparent-white" type="button" data-toggle="modal" data-target="#login-modal">Log in to your account...</button>
+                </div>
+            </form><!-- /.user-form -->
+        </div><!-- /.container -->
+    </footer><!-- /#footer -->
+{% else %}
+     <footer id="colophon" class="site-footer pages-footer">
+        <div class="container container-960">
+            <div class="row">
+                <div class="footer-col">
+                    <a href="#" class="site-logo" rel="home"><img src="{% static "img/logo.png" %}" alt=""></a>
+                </div><!-- /.footer-col -->
+                <div class="footer-col">
+                    <h4>News</h4>
+                    <ul>
+                        <li><a href="#">Current</a></li>
+                        <li><a href="#">Archive</a></li>
+                        <li><a href="#">Submit a story</a></li>
+                    </ul>
+                </div><!-- /.footer-col -->
+                <div class="footer-col">
+                    <h4>Events</h4>
+                    <ul>
+                        <li><a href="#">Browse</a></li>
+                        <li><a href="#">Attending</a></li>
+                        <li><a href="#">Manage</a></li>
+                    </ul>
+                </div><!-- /.footer-col -->
+                <div class="footer-col">
+                    <h4>Startups</h4>
+                    <ul>
+                        <li><a href="#">Browse</a></li>
+                        <li><a href="#">Manage</a></li>
+                    </ul>
+                </div><!-- /.footer-col -->
+                <div class="footer-col">
+                    <h4>Companies</h4>
+                    <ul>
+                        <li><a href="#">Browse</a></li>
+                        <li><a href="#">Manage</a></li>
+                    </ul>
+                </div><!-- /.footer-col -->
+                <div class="footer-col">
+                    <h4>Jobs</h4>
+                    <ul>
+                        <li><a href="#">Browse</a></li>
+                        <li><a href="#">Manage</a></li>
+                    </ul>
+                </div><!-- /.footer-col -->
+                <div class="footer-col">
+                    <h4>Profile</h4>
+                    <ul>
+                        <li><a href="#">Your Activity</a></li>
+                        <li><a href="#">Edit Profile</a></li>
+                    </ul>
+                </div><!-- /.footer-col -->
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">About YBF</a></li>
+                        <li><a href="#">Terms of service</a></li>
+                        <li><a href="#">Legal</a></li>
+                    </ul>
+                </div><!-- /.footer-col -->
+                <div class="footer-col pull-right text-right">
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div><!-- /.footer-col -->
+            </div>
+        </div><!-- /.container -->
+    </footer><!-- /#footer -->
+{% endif %}
+ <script src="{% static "js/jquery.prettyPhoto.js" %}"></script>
+ <script src="{% static "js/jquery.isotope.min.js" %}"></script>
+    <script src="{% static "js/main.js" %}"></script>
+</body>
+</html>
